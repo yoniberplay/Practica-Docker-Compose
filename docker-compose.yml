@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  php:
+    image: php:8.1-apache
+    container_name: practica_docker_compose
+    volumes:
+      - ./app:/var/www/html
+    ports:
+      - 8080:80
+    depends_on:
+      - mariadb
+    environment:
+      - MYSQL_HOST=mariadb
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - ESTUDIANTE=${ESTUDIANTE}
+      - MAT=${MAT}
+
+  mariadb:
+    image: mariadb:10.5
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: practica_docker_compose
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      ESTUDIANTE: ${ESTUDIANTE}
+      MAT: ${MAT}
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
